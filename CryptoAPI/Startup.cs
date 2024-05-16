@@ -25,7 +25,7 @@ namespace CryptoExchangeApi
             services.AddScoped<IEstimateService, EstimateService>();
             services.AddScoped<IRatesService, RatesService>();
             
-            var validCurrencies = new List<string> { "BTC", "ETH", "GBP" }; // Replace with your actual list of valid currencies
+            var validCurrencies = new List<string> { "BTC", "ETH", "USDT" }; // Replace with your actual list of valid currencies
             services.AddSingleton<IRequestValidationService>(new RequestValidationService(validCurrencies));
 
 
@@ -39,9 +39,6 @@ namespace CryptoExchangeApi
             {
                 app.UseDeveloperExceptionPage();
             }
-            
-
-            app.UseSwaggerUI();
 
             app.UseRouting();
             
