@@ -1,5 +1,6 @@
 using CryptoAPI.Exchanges;
 using CryptoAPI.Services;
+using CryptoExchangeApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,10 @@ namespace CryptoExchangeApi
             services.AddControllers();
             services.AddScoped<IEstimateService, EstimateService>();
             services.AddScoped<IRatesService, RatesService>();
+            
+            var validCurrencies = new List<string> { "BTC", "ETH", "GBP" }; // Replace with your actual list of valid currencies
+            services.AddSingleton<IRequestValidationService>(new RequestValidationService(validCurrencies));
+
 
             services.AddTransient<IExchange, BinanceExchange>();
             services.AddTransient<IExchange, KucoinExchange>();
