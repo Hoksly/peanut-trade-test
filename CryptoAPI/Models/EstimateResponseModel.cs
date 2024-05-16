@@ -1,14 +1,10 @@
 namespace CryptoAPI.Models
 {
-    public class EstimateResponse
+    public class EstimateResponseModel
     {
-        public string ExchangeName { get; set; }
+        public string? ExchangeName { get; set; }
         public decimal OutputAmount { get; set; }
         
-        public EstimateResponse(string exchangeName, decimal outputAmount)
-        {
-            ExchangeName = exchangeName;
-            OutputAmount = outputAmount;
-        }
+ 
     }
 }
