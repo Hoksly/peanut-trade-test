@@ -3,6 +3,7 @@ using CryptoAPI.Models;
 using CryptoAPI.Models;
 using System.Threading.Tasks;
 using CryptoAPI.Services;
+using CryptoExchangeApi.Services;
 
 namespace CryptoAPI.Controllers
 {
@@ -11,15 +12,26 @@ namespace CryptoAPI.Controllers
     public class RatesController : ControllerBase
     {
         private readonly IRatesService _ratesService;
+        private IRequestValidationService _requestValidationService;
 
-        public RatesController(IRatesService ratesService)
+        public RatesController(IRatesService ratesService, IRequestValidationService requestValidationService)
         {
             _ratesService = ratesService;
+            _requestValidationService = requestValidationService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetEstimate([FromQuery] string baseCurrency, [FromQuery] string quoteCurrency)
         {
+            if (!_requestValidationService.CurrencyValid(baseCurrency))
+            {
+                return BadRequest("No such currency available " + baseCurrency);
+            }
+            
+            if(_requestValidationService.CurrencyValid(quoteCurrency))
+            {
+                return BadRequest("No such currency available " + quoteCurrency);
+            }
             
             var request = new RateRequestModel
             {
