@@ -20,9 +20,25 @@ namespace CryptoAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetEstimate([FromQuery] string baseCurrency, [FromQuery] string quoteCurrency)
         {
-            var request = new ReateRequestModel(baseCurrency, quoteCurrency);
-            var result = await _ratesService.GetRatesAsync(request);
-            return Ok(result);
+            
+            var request = new RateRequestModel
+            {
+                BaseCurrency = baseCurrency,
+                QuoteCurrency = quoteCurrency
+            };
+            try
+            {
+                var result = await _ratesService.GetRatesAsync(request);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

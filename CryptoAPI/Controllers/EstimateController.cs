@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using CryptoAPI.Models;
+
 using CryptoAPI.Models;
 using System.Threading.Tasks;
 using CryptoAPI.Services;
@@ -20,9 +20,27 @@ namespace CryptoAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetEstimate([FromQuery] decimal inputAmount, [FromQuery] string inputCurrency, [FromQuery] string outputCurrency)
         {
-            var request = new EstimateRequest(inputAmount, inputCurrency, outputCurrency);
-            var result = await _estimateService.EstimateExchangeAsync(request);
-            return Ok(result);
+            var request = new EstimateRequestModel
+            {
+                InputAmount = inputAmount,
+                InputCurrency = inputCurrency,
+                OutputCurrency = outputCurrency
+            };
+
+
+            try
+            {
+                var result = await _estimateService.EstimateExchangeAsync(request);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
         }
     }
 }
