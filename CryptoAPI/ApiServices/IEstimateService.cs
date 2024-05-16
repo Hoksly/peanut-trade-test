@@ -4,6 +4,6 @@ namespace CryptoAPI.Services
 {
     public interface IEstimateService
     {
-        Task<EstimateResponse> EstimateExchangeAsync(EstimateRequest request);
+        Task<EstimateResponseModel> EstimateExchangeAsync(EstimateRequestModel request);
     }
 }
